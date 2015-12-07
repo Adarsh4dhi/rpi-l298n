@@ -142,7 +142,7 @@ try:
         elif char == ord(' '):
             # print doesn't work with curses, use addstr instead
             #screen.addstr(0, 0, 'right')
-            if not ( LastKey == "enter" ) : print ('Last key was not Enter')
+            if not ( LastKey == "enter" ) : print ('Last key was not Enter, it was %s \n' % LastKey)
             LastKey="enter"
             print ('enter\n')
             Stop()
@@ -171,7 +171,7 @@ try:
 
         elif char == curses.KEY_DOWN:
             #screen.addstr(0, 0, 'down ')
-            if not ( LastKey == "down" ) : print ('Last key was not down = %s \n' % LastKey)
+            if not ( LastKey == "down" ) : print ('Last key was not down t was %s \n' % LastKey)
             LastKey="down"
             print ('down\n')
             Down()
