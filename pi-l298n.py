@@ -36,9 +36,9 @@ GPIO.setup(18, GPIO.OUT)# set GPIO 01 as an output Enabler
 GPIO.setup(24, GPIO.OUT)# set GPIO 05 as an output.
 GPIO.setup(23, GPIO.OUT)# set GPIO 04 as an output.
   
-p24 = GPIO.PWM(24, 50)
-p23 = GPIO.PWM(23, 50)
-p18 = GPIO.PWM(18, 50)    # create an object p for PWM on port 18 at 50 Hertz
+p24 = GPIO.PWM(24, 100)
+p23 = GPIO.PWM(23, 100)
+p18 = GPIO.PWM(18, 100)    # create an object p for PWM on port 18 at 50 Hertz
                         # you can have more than one of these, but they need
                         # different names for each port
                         # e.g. p1, p2, motor, servo1 etc.
@@ -48,9 +48,9 @@ GPIO.setup(13, GPIO.OUT)# set GPIO 03 as an output Enabler
 GPIO.setup(27, GPIO.OUT)# set GPIO 02 as an output.
 GPIO.setup(17, GPIO.OUT)# set GPIO 0  as an output.
 
-p27 = GPIO.PWM(27, 50)
-p17 = GPIO.PWM(17, 50)
-p13 = GPIO.PWM(13, 50)    # create an object p for PWM on port 18 at 50 Hertz  
+p27 = GPIO.PWM(27, 100)
+p17 = GPIO.PWM(17, 100)
+p13 = GPIO.PWM(13, 100)    # create an object p for PWM on port 18 at 50 Hertz  
                         # you can have more than one of these, but they need  
                         # different names for each port   
                         # e.g. p1, p2, motor, servo1 etc.  
@@ -61,7 +61,7 @@ LastKey = ""
 #			Functions		  		#
 #################################################################
 
-def PowerOff():
+def Stop():
             p18.start(0)
             p23.start(0)
             p24.start(0)
@@ -69,41 +69,41 @@ def PowerOff():
             p13.start(0)
             p27.start(0)
             p17.start(0)
-            time.sleep(0.5)
-            GPIO.cleanup()
-            print ("Going to sleep")
-            exit()
+            time.sleep(0.3)
+            #GPIO.cleanup()
+            print ("Stop executed")
+            #exit()
 
 def Left():
-            if LastKey != 'left' : PowerOff()
+            if LastKey != 'left' : Stop()
             p18.start(60)
             p23.start(0)
             p24.start(100)
 
-            time.sleep(0.3)
+            time.sleep(0.4)
             p13.start(60)
             p27.start(0)
             p17.start(100)
 
 #            time.sleep(0.3)
-            #PowerOff()
+            #Stop()
 
 def Right():
-            if LastKey != 'right' : PowerOff()
+            if LastKey != 'right' : Stop()
             p18.start(60)
             p23.start(100)
             p24.start(0)
 
-            time.sleep(0.3)
+            time.sleep(0.4)
             p13.start(60)
             p27.start(100)
             p17.start(0)
 
 #            time.sleep(0.3)
-            #PowerOff()
+            #Stop()
 
 def Up():
-            if LastKey != 'up' : PowerOff()
+            #if LastKey != 'up' : Stop()
             p18.start(60)
             p23.start(100)
             p24.start(0)
@@ -113,11 +113,11 @@ def Up():
             p27.start(0)
             p17.start(100)
 
-#            time.sleep(0.3)
-            #PowerOff()
+            time.sleep(0.3)
+            #Stop()
 
 def Down():
-            if LastKey != 'down' : PowerOff()
+            #if LastKey != 'down' : Stop()
             p18.start(60)
             p23.start(0)
             p24.start(100)
@@ -127,8 +127,8 @@ def Down():
             p27.start(100)
             p17.start(0)
 
-#            time.sleep(0.3)
-            #PowerOff()
+            time.sleep(0.3)
+            #Stop()
 
 
 try:
@@ -142,46 +142,36 @@ try:
         elif char == ord(' '):
             # print doesn't work with curses, use addstr instead
             #screen.addstr(0, 0, 'right')
-            if not ( LastKey == "enter" ) : print ('Last key not Enter')
+            if not ( LastKey == "enter" ) : print ('Last key was not Enter')
             LastKey="enter"
-            print ('tttytytytt\n')
-
-            p18.start(0)
-            p23.start(0)
-            p24.start(0)
-
-            p13.start(0)
-            p27.start(0)
-            p17.start(0)
-            time.sleep(0.2)
-
-            #PowerOff()
+            print ('enter\n')
+            Stop()
 
         elif char == curses.KEY_RIGHT:
             # print doesn't work with curses, use addstr instead
             #screen.addstr(0, 0, 'right')
-            if not ( LastKey == "right" ) : print ('Last key not right')
+            if not ( LastKey == "right" ) : print ('Last key was not right, it was %s \n' % LastKey)
             LastKey="right"
             print ('right\n')
             Right() 
            
         elif char == curses.KEY_LEFT:
             #screen.addstr(0, 0, 'left ')       
-            if not ( LastKey == "left" ) : print ('Last key not left')
+            if not ( LastKey == "left" ) : print ('Last key was not left, it was %s \n' % LastKey)
             LastKey="left"
             print ('left\n')
             Left()
 
         elif char == curses.KEY_UP:
             #screen.addstr(0, 0, 'up   ')       
-            if not ( LastKey == "up" ) : print ('Last key not up = %s \n' % LastKey)
+            if not ( LastKey == "up" ) : print ('Last key was not up, it was %s \n' % LastKey)
             LastKey="up"
             print ('up\n')
             Up()
 
         elif char == curses.KEY_DOWN:
             #screen.addstr(0, 0, 'down ')
-            if not ( LastKey == "down" ) : print ('Last key not down = %s \n' % LastKey)
+            if not ( LastKey == "down" ) : print ('Last key was not down = %s \n' % LastKey)
             LastKey="down"
             print ('down\n')
             Down()
@@ -189,7 +179,8 @@ try:
             print ('Nothing Entred!\n')
 
 finally:
-    # shut down cleanly
+    # shut down cleanly 
+    print ('In the finally section now')
     curses.nocbreak(); screen.keypad(0); curses.echo()
     curses.endwin()
     p13.stop()                # stop the PWM output
